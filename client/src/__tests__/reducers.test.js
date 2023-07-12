@@ -8,6 +8,9 @@ import {
   TOGGLE_CART
 } from '../utils/actions';
 
+import productsReducer, { updateProducts } from '../utils/productsSlice';
+import categoriesReducer, { updateCategories, updateCurrentCategory } from '../utils/categoriesSlice';
+
 const initialState = {
   products: [],
   cart: [
@@ -27,15 +30,13 @@ const initialState = {
   currentCategory: '1',
 };
 
-/*test('UPDATE_PRODUCTS', () => {
-  let newState = reducer(initialState, {
-    type: UPDATE_PRODUCTS,
-    products: [{}, {}]
-  });
-
-  expect(newState.products.length).toBe(2);
-  expect(initialState.products.length).toBe(0);
-});*/
+test('UPDATE_PRODUCTS', () => {
+  const initialState = [];
+  const newState = productsReducer(initialState, updateProducts([{}, {}]));
+  
+  expect(newState.length).toBe(2);
+  expect(initialState.length).toBe(0);
+});
 
 test('ADD_TO_CART', () => {
   let newState = reducer(initialState, {
@@ -91,25 +92,28 @@ test('ADD_MULTIPLE_TO_CART', () => {
   expect(initialState.cart.length).toBe(2);
 });
 
-/*test('UPDATE_CATEGORIES', () => {
-  let newState = reducer(initialState, {
-    type: UPDATE_CATEGORIES,
-    categories: [{}, {}]
-  });
-
-  expect(newState.categories.length).toBe(2);
-  expect(initialState.categories.length).toBe(1);
+test('UPDATE_CATEGORIES', () => {
+  const initialState = {
+    entries: ['food'],
+    current: ''
+  };
+  const newState = categoriesReducer(initialState, updateCategories(['food', 'books']));
+  
+  expect(newState.entries.length).toBe(2);
+  expect(initialState.entries.length).toBe(1);
+  expect(newState.current).toBe('');
 });
 
 test('UPDATE_CURRENT_CATEGORY', () => {
-  let newState = reducer(initialState, {
-    type: UPDATE_CURRENT_CATEGORY,
-    currentCategory: '2'
-  });
+  const initialState = {
+    entries: ['food', 'books'],
+    current: 'food'
+  };
+  const newState = categoriesReducer(initialState, updateCurrentCategory('books'));
 
-  expect(newState.currentCategory).toBe('2');
-  expect(initialState.currentCategory).toBe('1');
-});*/
+  expect(newState.current).toBe('books');
+  expect(initialState.current).toBe('food');
+});
 
 test('CLEAR_CART', () => {
   let newState = reducer(initialState, {
