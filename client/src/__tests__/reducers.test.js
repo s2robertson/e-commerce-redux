@@ -4,8 +4,6 @@ import {
   UPDATE_CART_QUANTITY,
   REMOVE_FROM_CART,
   ADD_MULTIPLE_TO_CART,
-  UPDATE_CATEGORIES,
-  UPDATE_CURRENT_CATEGORY,
   CLEAR_CART,
   TOGGLE_CART
 } from '../utils/actions';
@@ -93,7 +91,7 @@ test('ADD_MULTIPLE_TO_CART', () => {
   expect(initialState.cart.length).toBe(2);
 });
 
-test('UPDATE_CATEGORIES', () => {
+/*test('UPDATE_CATEGORIES', () => {
   let newState = reducer(initialState, {
     type: UPDATE_CATEGORIES,
     categories: [{}, {}]
@@ -111,7 +109,7 @@ test('UPDATE_CURRENT_CATEGORY', () => {
 
   expect(newState.currentCategory).toBe('2');
   expect(initialState.currentCategory).toBe('1');
-});
+});*/
 
 test('CLEAR_CART', () => {
   let newState = reducer(initialState, {
