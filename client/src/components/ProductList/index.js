@@ -13,20 +13,20 @@ function ProductList() {
   const { loading, data } = useQuery(QUERY_PRODUCTS);
   const { current: currentCategory } = useSelector(categoriesSelector);
   const products = useSelector(productsSelector);
-  const reduxDispatch = useDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (data) {
-      reduxDispatch(updateProducts(data.products));
+      dispatch(updateProducts(data.products));
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
       });
     } else if (!loading) {
       idbPromise('products', 'get').then((idbProducts) => {
-        reduxDispatch(updateProducts(idbProducts));
+        dispatch(updateProducts(idbProducts));
       });
     }
-  }, [data, loading, reduxDispatch]);
+  }, [data, loading, dispatch]);
 
   function filterProducts() {
     if (!currentCategory) {
