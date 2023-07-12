@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { productsSelector, updateProducts } from '../utils/productsSlice';
+
 import Cart from '../components/Cart';
 import { useStoreContext } from '../utils/GlobalState';
 import {
   REMOVE_FROM_CART,
   UPDATE_CART_QUANTITY,
   ADD_TO_CART,
-  UPDATE_PRODUCTS,
 } from '../utils/actions';
 import { QUERY_PRODUCTS } from '../utils/queries';
 import { idbPromise } from '../utils/helpers';
@@ -22,8 +24,12 @@ function Detail() {
 
   const { loading, data } = useQuery(QUERY_PRODUCTS);
 
-  const { products, cart } = state;
+  const products = useSelector(productsSelector);
+  const reduxDispatch = useDispatch();
 
+  const { cart } = state;
+
+  /* I strongly suspect there is redundancy with the similar effect in ProductList */
   useEffect(() => {
     // already in global store
     if (products.length) {
@@ -31,10 +37,7 @@ function Detail() {
     }
     // retrieved from server
     else if (data) {
-      dispatch({
-        type: UPDATE_PRODUCTS,
-        products: data.products,
-      });
+      reduxDispatch(updateProducts(data.products));
 
       data.products.forEach((product) => {
         idbPromise('products', 'put', product);
@@ -43,13 +46,10 @@ function Detail() {
     // get cache from idb
     else if (!loading) {
       idbPromise('products', 'get').then((indexedProducts) => {
-        dispatch({
-          type: UPDATE_PRODUCTS,
-          products: indexedProducts,
-        });
+        reduxDispatch(updateProducts(indexedProducts));
       });
     }
-  }, [products, data, loading, dispatch, id]);
+  }, [products, data, loading, reduxDispatch, id]);
 
   const addToCart = () => {
     const itemInCart = cart.find((cartItem) => cartItem._id === id);

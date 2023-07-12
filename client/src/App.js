@@ -18,6 +18,9 @@ import { StoreProvider } from './utils/GlobalState';
 import Success from './pages/Success';
 import OrderHistory from './pages/OrderHistory';
 
+import reduxStore from './utils/store';
+import { Provider as ReduxProvider } from 'react-redux';
+
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
@@ -40,43 +43,45 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
-        <div>
-          <StoreProvider>
-            <Nav />
-            <Routes>
-              <Route 
-                path="/" 
-                element={<Home />} 
-              />
-              <Route 
-                path="/login" 
-                element={<Login />} 
-              />
-              <Route 
-                path="/signup" 
-                element={<Signup />} 
-              />
-              <Route 
-                path="/success" 
-                element={<Success />} 
-              />
-              <Route 
-                path="/orderHistory" 
-                element={<OrderHistory />} 
-              />
-              <Route 
-                path="/products/:id" 
-                element={<Detail />} 
-              />
-              <Route 
-                path="*" 
-                element={<NoMatch />} 
-              />
-            </Routes>
-          </StoreProvider>
-        </div>
-      </Router>
+      <ReduxProvider store={reduxStore}>
+        <Router>
+          <div>
+            <StoreProvider>
+              <Nav />
+              <Routes>
+                <Route 
+                  path="/" 
+                  element={<Home />} 
+                />
+                <Route 
+                  path="/login" 
+                  element={<Login />} 
+                />
+                <Route 
+                  path="/signup" 
+                  element={<Signup />} 
+                />
+                <Route 
+                  path="/success" 
+                  element={<Success />} 
+                />
+                <Route 
+                  path="/orderHistory" 
+                  element={<OrderHistory />} 
+                />
+                <Route 
+                  path="/products/:id" 
+                  element={<Detail />} 
+                />
+                <Route 
+                  path="*" 
+                  element={<NoMatch />} 
+                />
+              </Routes>
+            </StoreProvider>
+          </div>
+        </Router>
+      </ReduxProvider>
     </ApolloProvider>
   );
 }

@@ -1,6 +1,5 @@
 import { reducer } from '../utils/reducers';
 import {
-  UPDATE_PRODUCTS,
   ADD_TO_CART,
   UPDATE_CART_QUANTITY,
   REMOVE_FROM_CART,
@@ -30,7 +29,7 @@ const initialState = {
   currentCategory: '1',
 };
 
-test('UPDATE_PRODUCTS', () => {
+/*test('UPDATE_PRODUCTS', () => {
   let newState = reducer(initialState, {
     type: UPDATE_PRODUCTS,
     products: [{}, {}]
@@ -38,7 +37,7 @@ test('UPDATE_PRODUCTS', () => {
 
   expect(newState.products.length).toBe(2);
   expect(initialState.products.length).toBe(0);
-});
+});*/
 
 test('ADD_TO_CART', () => {
   let newState = reducer(initialState, {
